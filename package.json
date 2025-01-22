@@ -1,0 +1,20 @@
+{
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "name": "devtinder",
+  "version": "1.0.0",
+  "description": "this is basically a Tinder for Devs",
+  "main": "app.js",
+  "devDependencies": {},
+  "scripts": {
+    
+  },
+  "keywords": [
+    "Express",
+    "NodeJs",
+    "MongoDB"
+  ],
+  "author": "Priyanshu Singh",
+  "license": "ISC"
+}
