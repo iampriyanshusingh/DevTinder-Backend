@@ -54,6 +54,20 @@ app.get("/emailOne", async (req, res) => {
   }
 });
 
+//getting info from the Id
+app.get("/getId", async(req,res) => {
+  const Id = req.body._id;
+  try{
+    const user = await User.findById(Id);
+    
+    if(!user){
+      res.status(404).send("Id Not Found");
+    }
+    res.send(user);
+  }catch(err){
+    res.status(500).send("Something Went Wrong");
+  }
+})
 connectDB()
   .then(() => {
     console.log("dataBase connected Successfully");
