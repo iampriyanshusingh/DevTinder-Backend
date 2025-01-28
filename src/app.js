@@ -2,6 +2,7 @@ const express = require("express");
 const connectDB = require("./config/database");
 const app = express();
 const User = require("./models/user");
+const validator = require("validator");
 
 app.use(express.json());
 
@@ -55,19 +56,66 @@ app.get("/emailOne", async (req, res) => {
 });
 
 //getting info from the Id
-app.get("/getId", async(req,res) => {
+app.get("/getId", async (req, res) => {
   const Id = req.body._id;
-  try{
+  try {
     const user = await User.findById(Id);
-    
-    if(!user){
+
+    if (!user) {
       res.status(404).send("Id Not Found");
     }
     res.send(user);
-  }catch(err){
+  } catch (err) {
     res.status(500).send("Something Went Wrong");
   }
-})
+});
+
+//deleting the data
+app.delete("/delete", async (req, res) => {
+  const userId = req.body.userId;
+  try {
+    await User.findByIdAndDelete(userId);
+    res.send("Data Deleted Successfully");
+  } catch (err) {
+    res.status(500).send("Something Went Wrong");
+  }
+});
+
+//updating the data
+// first parameter is route Name, second is Request Handler, third option will be callback function that consist object
+app.patch("/update/:userId", async (req, res) => {
+  const userId = req.params?.userId;
+  const data = req.body;
+
+  try {
+    const Allowed_Updates = [
+      "firstName",
+      "lastName",
+      "Gender",
+      "age",
+      "email",
+      "password",
+      "skills",
+    ];
+    const isUpdateAllowed = Object.keys(data).every((k) =>
+      Allowed_Updates.includes(k)
+    );
+    if (!isUpdateAllowed) {
+      res.status(400).send("Can't Update Data");
+    }
+
+    if(data?.skills.length>10){
+      res.status(400).send("Invalid Response");
+    }
+    await User.findByIdAndUpdate(userId, data, {
+      runValidators: true,
+    });
+    res.send("Data Updated Successfully");
+  } catch (err) {
+    res.status(500).send("Something Went Wrong");
+  }
+});
+
 connectDB()
   .then(() => {
     console.log("dataBase connected Successfully");
