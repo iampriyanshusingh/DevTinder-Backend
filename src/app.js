@@ -2,7 +2,6 @@ const express = require("express");
 const connectDB = require("./config/database");
 const app = express();
 const User = require("./models/user");
-const validator = require("validator");
 
 app.use(express.json());
 
@@ -93,7 +92,6 @@ app.patch("/update/:userId", async (req, res) => {
       "lastName",
       "Gender",
       "age",
-      "email",
       "password",
       "skills",
     ];
