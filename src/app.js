@@ -12,8 +12,10 @@ app.post("/signup", async (req, res) => {
     await user.save();
     res.send("Data Added Successfully");
   } catch (err) {
-    res.status(400).send("Failed to connect");
-  }
+    console.error("Error:", err.message);
+    res.status(400).send(err.message);
+}
+
 });
 
 //getting data from the Email (All Data with same Email Id)

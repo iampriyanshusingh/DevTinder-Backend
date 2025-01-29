@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const validate = require("validator");
+const validator = require("validator");
 
 const userSchema = new mongoose.Schema(
   {
@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema(
     },
     Gender: {
       type: String,
-      required: true,
+      // required: true,
       lowerCase:true,
       validate(value){
         if(!["male","female","others"].includes(value)){
