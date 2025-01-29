@@ -4,8 +4,11 @@ const app = express();
 const User = require("./models/user");
 const { validation } = require("./helpers/validation");
 const bcrypt = require("bcrypt");
+const cookieParser = require("cookie-parser");
+const jwt =  require("jsonwebtoken");
 
 app.use(express.json());
+app.use(cookieParser());
 
 
 //singup API
@@ -50,10 +53,35 @@ app.post("/login", async(req,res)=> {
     if(!isPasswordValid){
       throw new Error("Invalid Credentials");
     }
+
+    //create a JWT token
+    const token =  await jwt.sign({_id:user._id}, "Priyanshu@123");
+    res.cookie("token", token);
+
+
     res.status(200).send("Login Successfully!!!");
   }catch(err){
     res.status(400).send("Invalid Credentials");
   }
+})
+
+app.get("/profile", async(req,res)=> {
+  const cookies = req.cookies;
+
+  const {token} = cookies;
+  //validate my cookie
+  if(!token){
+    throw new Error("Invalid Token");
+  }
+  
+  const decode = await jwt.verify(token, "Priyanshu@123");
+  const {_id} = decode;
+
+  const user = await User.findById(_id);
+  if(!user){
+    throw new Error("User Not Found!!!");
+  }
+  res.send(user);
 })
 
 //updating the data
