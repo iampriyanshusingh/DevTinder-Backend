@@ -1,24 +1,30 @@
-const authAdmin = (req,res,next) => {
-    const token = "xyz";
-    const verifyAuthentication = token === "xyz";
-    if(!verifyAuthentication){
-        res.status(401).send("Authentication Failed");
-    }else{
-       next();
-    }
-}
+const jwt = require("jsonwebtoken");
+const User = require("../models/user");
 
-const authUser = (req,res,next) =>{
-    const token = "xyz";
-    const verifyAuthentication = token === "xyz";
-    if(!verifyAuthentication){
-        res.status(401).send("Authentication Failed");
-    }else{
-        next();
+const authUser = async (req, res, next) => {
+  try {
+    const cookies = req.cookies;
+    const { token } = cookies;
+    if(!token){
+        throw new Error("Token Not Found");
     }
-} 
 
-module.exports={
-    authAdmin,
-    authUser,
+    const decodedObj = await jwt.verify(token, "Priyanshu@123");
+
+    const { _id } = decodedObj;
+
+    const user = await User.findById(_id);
+    if (!user) {
+      throw new Error("User Not found");
+    }
+
+    req.user = user;
+    next();
+  } catch (err) {
+    res.status(400).send("Something Went Wrong" + err.message);
+  }
+};
+
+module.exports = {
+  authUser,
 };
