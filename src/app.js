@@ -8,8 +8,8 @@ const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const { authUser } = require("./middlewares/auth");
 
-app.use(express.json());
-app.use(cookieParser());
+app.use(express.json()); //if we dont use this, it will return undefined for the req.body
+app.use(cookieParser()); //if we dont use this, it will return undefined for the cookie fetching
 
 //singup API
 app.post("/signup", async (req, res) => {
@@ -73,6 +73,10 @@ app.get("/profile", authUser, async (req, res) => {
   }
 });
 
+app.post("/sendConnectionRequest"), authUser , async (req, res) => {
+  console.log("Sending a connection request");
+  res.send("Connection Request Sent");
+}
 
 
 
