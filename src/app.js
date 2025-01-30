@@ -19,17 +19,20 @@ app.post("/signup", async (req, res) => {
   try {
     //validation
     validation(req);
-    //encryption
-    const passwordHash = await user.getPassword();
+    
     //creating new instance of the User model
     const user = new User({
       firstName,
       lastName,
       email,
-      password: passwordHash,
+      password,
       Gender,
       age,
     });
+
+    //encryption
+    const passwordHash = await user.generatePassword();
+    user.password = passwordHash;
 
     await user.save();
     res.send("Data Added Successfully");
@@ -48,7 +51,7 @@ app.post("/login", async (req, res) => {
     if (!user) {
       throw new Error("Invalid Credentials");
     }
-    const isPasswordValid = await user.isPasswordValid();
+    const isPasswordValid = await user.validatePassword(password);
     if (!isPasswordValid) {
       throw new Error("Invalid Credentials");
     }

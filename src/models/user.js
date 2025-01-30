@@ -56,7 +56,7 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-userSchema.model.getJWT = async function () {
+userSchema.methods.getJWT = async function () {
   const user = this;
   const token = await jwt.sign({ _id: user._id }, "Priyanshu@123", {
     expiresIn: "1h",
@@ -65,19 +65,22 @@ userSchema.model.getJWT = async function () {
   return token;
 };
 
-userSchema.model.getPassword = async function () {
+userSchema.methods.generatePassword = async function(){
   const user = this;
   const password = await bcrypt.hash(user.password, 10);
 
   return password;
 }
 
-userSchema.model.validatePassword =  async function(){
+userSchema.methods.validatePassword = async function (passwordInputByUser) {
   const user = this;
   const passwordHash = user.password;
 
-  const isPasswordValid = await bcrypt.compare(password, passwordHash);
+  const isPasswordValid = await bcrypt.compare(
+    passwordInputByUser,
+    passwordHash
+  );
 
   return isPasswordValid;
-}
+};
 module.exports = mongoose.model("User", userSchema);
