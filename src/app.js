@@ -20,7 +20,7 @@ app.post("/signup", async (req, res) => {
     //validation
     validation(req);
     //encryption
-    const passwordHash = await bcrypt.hash(password, 10);
+    const passwordHash = await user.getPassword();
     //creating new instance of the User model
     const user = new User({
       firstName,
@@ -43,18 +43,18 @@ app.post("/signup", async (req, res) => {
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-
+ 
     const user = await User.findOne({ email: email });
     if (!user) {
       throw new Error("Invalid Credentials");
     }
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await user.isPasswordValid();
     if (!isPasswordValid) {
       throw new Error("Invalid Credentials");
     }
 
     //create a JWT token
-    const token = await jwt.sign({ _id: user._id }, "Priyanshu@123");
+    const token = await user.getJWT();
     res.cookie("token", token);
 
     res.status(200).send("Login Successfully!!!");
@@ -73,12 +73,15 @@ app.get("/profile", authUser, async (req, res) => {
   }
 });
 
-app.post("/sendConnectionRequest"), authUser , async (req, res) => {
-  console.log("Sending a connection request");
-  res.send("Connection Request Sent");
-}
-
-
+app.post("/sendConnectionRequest", authUser, async (req, res) => {
+  try {
+    console.log("Sending a connection request");
+  } catch (err) {
+    res.status(400).send("Something Went Wrong : " + err.message);
+  }
+  const user = req.user;
+  res.send(user.firstName + " sent the Connection Request");
+});
 
 connectDB()
   .then(() => {
