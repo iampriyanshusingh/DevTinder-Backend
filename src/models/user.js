@@ -18,10 +18,9 @@ const userSchema = new mongoose.Schema(
       type: String,
       // required: true,
       lowerCase: true,
-      validate(value) {
-        if (!["male", "female", "others"].includes(value)) {
-          throw new Error("Gender Not Exist");
-        }
+      enum: {
+        values: ["male", "female", "other"],
+        message: `{VALUE} Gender is not Exist`,
       },
     },
     age: {
@@ -65,12 +64,12 @@ userSchema.methods.getJWT = async function () {
   return token;
 };
 
-userSchema.methods.generatePassword = async function(){
+userSchema.methods.generatePassword = async function () {
   const user = this;
   const password = await bcrypt.hash(user.password, 10);
 
   return password;
-}
+};
 
 userSchema.methods.validatePassword = async function (passwordInputByUser) {
   const user = this;
