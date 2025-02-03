@@ -22,9 +22,24 @@ const connectionRequestSchema = new mongoose.Schema(
   { Timestamp: true }
 );
 
+
+//compound indexing
+// 1 means ascending order
+// -1 means descending order
+connectionRequestSchema.index({ toUserId: 1, fromUserId: 1 });
+
+connectionRequestSchema.pre("save", function (next) {
+  const connectionRequest = this;
+  //checking if the fromUserId is same toUserId
+  if (connectionRequest.fromUserId.equals(connectionRequest.toUserId)) {
+    throw new Error("Cannot send the connection request to yourself");
+  }
+  next(); //middleware
+});
+
 const ConnectionRequestModel = new mongoose.model(
-    "ConnectionRequest",
-    connectionRequestSchema
+  "ConnectionRequest",
+  connectionRequestSchema
 );
 
 module.exports = ConnectionRequestModel;

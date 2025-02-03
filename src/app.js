@@ -4,14 +4,13 @@ const app = express();
 const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
+const userRouter = require("./routes/user");
 const cookieParser = require("cookie-parser");
 
 app.use(express.json()); //if we dont use this, it will return undefined for the req.body
 app.use(cookieParser()); //if we dont use this, it will return undefined for the cookie fetching
 
-
-app.use("/", authRouter, profileRouter, requestRouter);
-
+app.use("/", authRouter, profileRouter, requestRouter, userRouter);
 connectDB()
   .then(() => {
     console.log("dataBase connected Successfully");
