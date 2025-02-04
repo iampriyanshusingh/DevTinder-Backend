@@ -2,7 +2,7 @@ const express = require("express");
 const userRouter = express.Router();
 const { authUser } = require("../middlewares/auth");
 const ConnectionRequest = require("../models/connectionRequest");
-
+const User = require("../models/user");
 const USER_SAFE_DATA = "firstName lastName age Gender skills";
 
 //getting all the pending connection request for the loggedIn user
@@ -47,6 +47,34 @@ userRouter.get("/user/connections", authUser, async (req, res) => {
     });
 
     res.json({ data });
+  } catch (err) {
+    res.status(400).send({ message: "Something Went Wrong" + err.message });
+  }
+});
+
+userRouter.get("/feed", authUser, async (req, res) => {
+  try {
+    const loggedInUser = req.user;
+
+    //geting all the connection Request which is sent or received
+    const connectionRequests = await ConnectionRequest.find({
+      $or: [{ fromUserId: loggedInUser._id }, { toUserId: loggedInUser._id }],
+    }).select("fromUserId toUserId");
+
+    const hideUserFromFeed = new Set();
+    connectionRequests.forEach((req) => {
+      hideUserFromFeed.add(req.fromUserId.toString());
+      hideUserFromFeed.add(req.toUserId.toString());
+    });
+
+    const user = await User.find({
+      $and: [
+        { _id: { $nin: Array.from(hideUserFromFeed) } },
+        { _id: { $ne: loggedInUser._id } },
+      ],
+    }).select(USER_SAFE_DATA);
+
+    res.send(user);
   } catch (err) {
     res.status(400).send({ message: "Something Went Wrong" + err.message });
   }
