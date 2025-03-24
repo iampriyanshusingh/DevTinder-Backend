@@ -6,7 +6,10 @@ const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
 const userRouter = require("./routes/user");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
+
+app.use(cors());
 app.use(express.json()); //if we dont use this, it will return undefined for the req.body
 app.use(cookieParser()); //if we dont use this, it will return undefined for the cookie fetching
 
