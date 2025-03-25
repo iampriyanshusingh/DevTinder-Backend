@@ -49,6 +49,9 @@ const userSchema = new mongoose.Schema(
       },
     },
     skills: [String],
+    photoURL: {
+      type: String,
+    },
   },
   {
     timestamps: true,

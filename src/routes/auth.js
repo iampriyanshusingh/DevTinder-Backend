@@ -5,8 +5,16 @@ const User = require("../models/user");
 
 //singup API
 authRouter.post("/signup", async (req, res) => {
-  const { firstName, lastName, email, password, Gender, skills, age } =
-    req.body;
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    Gender,
+    skills,
+    age,
+    photoURL,
+  } = req.body;
 
   try {
     //validation
@@ -20,6 +28,8 @@ authRouter.post("/signup", async (req, res) => {
       password,
       Gender,
       age,
+      skills,
+      photoURL,
     });
 
     //encryption
@@ -54,7 +64,7 @@ authRouter.post("/login", async (req, res) => {
       expires: new Date(Date.now() + 8 * 3600000),
     });
 
-    res.status(200).send("Login Successfully!!!");
+    res.status(200).send(user);
   } catch (err) {
     res.status(400).send("Invalid Credentials");
   }
@@ -63,7 +73,6 @@ authRouter.post("/login", async (req, res) => {
 //logout API
 
 authRouter.post("/logout", async (req, res) => {
-
   // res.cookie("token", nulll , {
   //   expires: new Date(Date.now()),
   // });
@@ -71,11 +80,10 @@ authRouter.post("/logout", async (req, res) => {
 
   //this is called chaning, we can write this like this too! upper code and lower code both are similar
   res
-    .cookie("token", null , {
+    .cookie("token", null, {
       expires: new Date(Date.now()),
     })
     .send("Logout Successfully");
 });
 
 module.exports = authRouter;
- 
