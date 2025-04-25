@@ -74,28 +74,6 @@ DEVTINDER is a full MERN (MongoDB, Express.js, React.js, Node.js) stack applicat
    http://localhost:3000
    ```
 
-## Folder Structure
-
-```
-DEVTINDER/
-├── backend/
-│   ├── config/         # Database and configuration files
-│   ├── controllers/    # API logic
-│   ├── models/         # MongoDB schemas
-│   ├── routes/         # API endpoints
-│   └── server.js       # Main server file
-├── frontend/
-│   ├── public/         # Static assets
-│   ├── src/
-│   │   ├── components/ # Reusable components
-│   │   ├── pages/      # Page components
-│   │   ├── utils/      # Helper functions
-│   │   └── App.js      # Main React app file
-├── .gitignore          # Files to ignore in Git
-├── README.md           # Project documentation
-└── package.json        # Dependency manager files
-```
-
 ## Future Enhancements
 
 - **AI Recommendations:** Suggest matches based on developer activity and skills.
