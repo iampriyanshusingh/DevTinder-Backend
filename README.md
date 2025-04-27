@@ -1,4 +1,4 @@
-# DEVTINDER
+## DEVTINDER
 
 DEVTINDER is a full MERN (MongoDB, Express.js, React.js, Node.js) stack application that functions as a platform to connect developers. It's not just a Tinder clone but a unique, functional app tailored for developers, fostering meaningful professional connections, collaborations, and discussions.
 
