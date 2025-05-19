@@ -1,4 +1,4 @@
-# DEVTINDER
+## DEVTINDER
 
 DEVTINDER is a full MERN (MongoDB, Express.js, React.js, Node.js) stack application that functions as a platform to connect developers. It's not just a Tinder clone but a unique, functional app tailored for developers, fostering meaningful professional connections, collaborations, and discussions.
 
@@ -73,28 +73,6 @@ DEVTINDER is a full MERN (MongoDB, Express.js, React.js, Node.js) stack applicat
    ```
    http://localhost:3000
    ```
-
-## Folder Structure
-
-```
-DEVTINDER/
-├── backend/
-│   ├── config/         # Database and configuration files
-│   ├── controllers/    # API logic
-│   ├── models/         # MongoDB schemas
-│   ├── routes/         # API endpoints
-│   └── server.js       # Main server file
-├── frontend/
-│   ├── public/         # Static assets
-│   ├── src/
-│   │   ├── components/ # Reusable components
-│   │   ├── pages/      # Page components
-│   │   ├── utils/      # Helper functions
-│   │   └── App.js      # Main React app file
-├── .gitignore          # Files to ignore in Git
-├── README.md           # Project documentation
-└── package.json        # Dependency manager files
-```
 
 ## Future Enhancements
 
